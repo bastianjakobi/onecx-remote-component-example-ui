@@ -1,0 +1,73 @@
+openapi: 3.0.0
+info:
+  title: onecx-remote-component-example-bff
+  description: Backend-For-Frontend (BFF) service for onecx-remote-component-example-svc.
+  version: 1.0.0
+  contact:
+    email: "tkit_dev@1000kit.org"
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: "http://onecx-remote-component-example-bff:8080"
+tags:
+  - name: testAPI
+
+paths:
+  /getText:
+    get:
+      # TODO: Should we add x-onecx permissions here?
+      description: Retrieve a piece of text
+      operationId: getText
+      tags:
+        - testAPI
+      responses:
+        '200':
+          description: Successfully retrieved text
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TextResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailResponse'
+components:
+  schemas:
+    ProblemDetailResponse:
+      type: object
+      properties:
+        errorCode:
+          type: string
+        detail:
+          type: string
+        params:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProblemDetailParam'
+        invalidParams:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProblemDetailInvalidParam'
+    ProblemDetailParam:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+    ProblemDetailInvalidParam:
+      type: object
+      properties:
+        name:
+          type: string
+        message:
+          type: string
+    TextResponse:
+      type: object
+      properties:
+        text:
+          type: string
+          example: Hello from the BFF!
