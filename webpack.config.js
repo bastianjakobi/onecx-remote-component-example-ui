@@ -10,6 +10,7 @@ const config = withModuleFederationPlugin({
   filename: 'remoteEntry.js',
   exposes: {
     './OnecxRemoteComponentExampleUiModule': './src/main.ts',
+    './OneCXDisplayTextComponent': './src/app/remotes/display-text/display-text.component.main.ts',
   },
   shared: share({
     '@angular/core': {

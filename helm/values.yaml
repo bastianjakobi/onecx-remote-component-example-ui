@@ -11,14 +11,13 @@ app:
     microfrontend:
       enabled: true
       specs:
-        main:
-          exposedModule: './OnecxRemoteComponentExampleUiModule'
-          description: 'OneCX OnecxRemoteComponentExampleUi Module'
-          note: 'OneCX OnecxRemoteComponentExampleUi UI module auto import via MF operator'
-          type: MODULE
+        display-text:
+          exposedModule: "./OneCXDisplayTextComponent"
+          description: "Display Text Component"
+          type: COMPONENT
           technology: WEBCOMPONENTMODULE
-          remoteName: onecx-remote-component-example-ui
-          tagName: onecx-remote-component-example-ui-webcomponent
+          remoteName: onecx-remote-component-example
+          tagName: ocx-display-text-component
     # Permission
     # ACTION S11 Update permissions and roles: https://onecx.github.io/docs/nx-plugins/current/general/getting_started/search/update-permissions.html#action-11
     permission:
