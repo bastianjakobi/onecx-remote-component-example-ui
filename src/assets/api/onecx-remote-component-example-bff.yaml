@@ -16,7 +16,10 @@ tags:
 paths:
   /getText:
     get:
-      # TODO: Should we add x-onecx permissions here?
+      x-onecx:
+        permissions:
+          text:
+            - read
       description: Retrieve a piece of text
       operationId: getText
       tags:

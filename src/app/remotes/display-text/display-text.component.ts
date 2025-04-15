@@ -1,11 +1,8 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { Component, Inject, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import {
-  AppConfigService,
-  UserService,
-} from '@onecx/angular-integration-interface';
+import { UserService } from '@onecx/angular-integration-interface';
 import {
   AngularRemoteComponentsModule,
   BASE_URL,
@@ -14,7 +11,8 @@ import {
   RemoteComponentConfig,
 } from '@onecx/angular-remote-components';
 import { BehaviorSubject, ReplaySubject } from 'rxjs';
-import { TestAPI } from 'src/app/shared/generated';
+import { Configuration, TestAPI } from 'src/app/shared/generated';
+import { environment } from 'src/environments/environment';
 
 @Component({
   standalone: true,
@@ -23,13 +21,6 @@ import { TestAPI } from 'src/app/shared/generated';
     CommonModule,
     RouterModule,
     TranslateModule,
-  ],
-  // TODO: Provide REMOTE_COMPONENT_CONFIG instead of BASE_URL
-  providers: [
-    {
-      provide: BASE_URL,
-      useValue: new ReplaySubject<string>(1),
-    },
   ],
   selector: 'app-display-text',
   templateUrl: 'display-text.component.html',
@@ -45,20 +36,23 @@ export class OneCXDisplayTextComponent implements ocxRemoteComponent, ocxRemoteW
 
   constructor(
     @Inject(BASE_URL) private readonly baseUrl: ReplaySubject<string>,
-    private readonly appConfigService: AppConfigService,
+    private readonly api: TestAPI,
     private readonly userService: UserService,
     private readonly translateService: TranslateService,
-    private readonly api: TestAPI
   ) {
-    this.translateService.use(this.userService.lang$.getValue());
+    this.userService.lang$.subscribe((lang) => {
+      this.translateService.use(lang);
+    });
   }
 
   ocxInitRemoteComponent(config: RemoteComponentConfig): void {
     this.baseUrl.next(config.baseUrl);
     this.permissions = config.permissions;
-    this.appConfigService.init(config.baseUrl);
-    this.api.getText().subscribe((text) => {
-      this.text$.next(text.text);
+    this.api.configuration = new Configuration({
+      basePath: Location.joinWithSlash(config.baseUrl, environment.apiPrefix),
+    })
+    this.api.getText().subscribe((result) => {
+      this.text$.next(result.text);
     });
   }
 }

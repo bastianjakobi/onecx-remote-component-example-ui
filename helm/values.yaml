@@ -24,6 +24,8 @@ app:
       enabled: true
       spec:
         permissions:
+          TEXT:
+            READ: Read text
     # Keycloak
     keycloak:
       client:

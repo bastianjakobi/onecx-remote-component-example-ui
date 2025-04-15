@@ -5,6 +5,9 @@ const {
   share,
   withModuleFederationPlugin,
 } = require('@angular-architects/module-federation/webpack');
+
+const webpack = require('webpack');
+
 const config = withModuleFederationPlugin({
   name: 'onecx-remote-component-example-ui-app',
   filename: 'remoteEntry.js',
@@ -92,9 +95,16 @@ const plugins = config.plugins.filter(
   (plugin) => !(plugin instanceof ModifyEntryPlugin)
 );
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 module.exports = {
   ...config,
-  plugins,
+  plugins: [
+    ...plugins,
+    new webpack.DefinePlugin({
+      ngDevMode: JSON.stringify(!isProduction)
+    }),
+  ],
   output: {
     uniqueName: 'onecx-remote-component-example-ui',
     publicPath: 'auto',

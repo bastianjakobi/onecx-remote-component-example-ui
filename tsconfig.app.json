@@ -9,7 +9,8 @@
   "files": [
     "src/app/onecx-remote-component-example-ui-app.remote.module.ts",
     "src/polyfills.ts",
-    "src/main.ts"
+    "src/main.ts",
+    "src/app/remotes/display-text/display-text.component.main.ts"
   ],
   "include": ["src/**/*.d.ts"],
   "exclude": ["jest.config.ts", "src/**/*.test.ts", "src/**/*.spec.ts"]
